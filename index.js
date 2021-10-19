@@ -5,7 +5,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const mongo = require("mongodb").MongoClient;
-const url = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const MONGODB_URI = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 //  /A/B/C/D/.........
 //view engine setup 
@@ -64,7 +64,7 @@ router.get( "/order",
 
 router.get( "/products", 
   (req, res) => {
-      mongo.connect(process.env.url, { useNewUrlParser: true ,  
+      mongo.connect(process.env.MONGODB_URI, { useNewUrlParser: true ,  
           useUnifiedTopology: true },
           async (err, db) => {
               if (err) {
