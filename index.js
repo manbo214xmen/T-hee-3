@@ -64,7 +64,7 @@ router.get( "/order",
 
 router.get( "/products", 
   (req, res) => {
-      mongo.connect(url, { useNewUrlParser: true ,  
+      mongo.connect(process.env.url, { useNewUrlParser: true ,  
           useUnifiedTopology: true },
           async (err, db) => {
               if (err) {
