@@ -5,7 +5,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const mongo = require("mongodb").MongoClient;
-const MONGODB_URI = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const MONGODB_URI = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 //  /A/B/C/D/.........
 //view engine setup 
