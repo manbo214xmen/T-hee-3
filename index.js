@@ -84,9 +84,7 @@ router.get( "/products",
 
 router.get( "/about", 
     (req, res) => {
-
-                res.writeHead(200);
-                res.end("<h1> About page ! </h1>");
+        res.render("About");
 
 });
 
