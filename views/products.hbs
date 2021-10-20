@@ -20,13 +20,31 @@
 		#ba-anh{
 			margin-top: -10%;
 			margin-left: 35px;
+            background-color:azure;
 		}
 		ul li{
 			margin-right: 50px;
 		}
 		h2 {
+            font-family: Geomanist;
 			margin: 20 0 10 50;
 		}	
+        h3 {
+            font-family: Geomanist;
+        }
+        .img-fluid {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }	
+        .col-lg-4{ 
+            background-color:azure;
+            margin-top: 1%;
+        }
+        a{
+            text-decoration: none;
+        }
+	
 	</style>
 
     </head>
@@ -39,7 +57,7 @@
 		</button>
 		<h1 style="font-family: Geomanist; font-weight: 700; font-size: 3em">T-HEE UNIFORM</h1>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-		  <ul class="navbar-nav ml-auto">
+		  <ul class="navbar-nav ms-auto">
 			<li class="nav-item">
 			  <a class="nav-link" href="about">About</a>
 			</li>
@@ -58,7 +76,7 @@
         <div class="container"> 
             <div class="row" id="intro">
 		        <div class="col-12">
-	    	        <img class="d-block w-100" src="images/Quy trình/coverphoto.jpg" alt="Second slide">
+	    	        <img class="d-block w-100" src="imgs/Quy trình/coverphoto.jpg" alt="Second slide">
 			        <h1 style="text-align: center; font-family: Hysteria; font-size: 5em; margin-top:auto;">Products</h1>
                 </div>
             </div>
@@ -66,24 +84,14 @@
                 {{#each products}}
                 <div class="col-lg-4">
                     <a href= "#" alt="" title="">
-                    <img src="{{this.imglink}}" class="img-responsive" alt="" title="" width="300" height="220">
+                    <img src="{{this.imglink}}" class="img-fluid" alt="">
                     </a>
-                    <h4 style="text-align: center;font-family: Geomanist; margin-left: 25%; text-decoration-color: cornflowerblue">
+                    <h2 style="text-align: center;">
                     <a href="#"  alt="" title="">{{this.ProName}}</a>
-                    </h4>
-                    <h4 style="text-align: center;font-family: Geomanist; margin-left: 25%; text-decoration-color: cornflowerblue">
-                    <a href="#"  alt="" title="">{{this.Price}}</a>
-                    </h4>
+                    </h2>
+                    <h3 style="text-align: center; text-color: rgb(123, 166, 245)">{{this.Price}}</h3>
 				</div>
                 {{/each}}
-                {{!-- {{#each products}}
-                    <div class="col-lg-4">
-                    {{this.ProName}}
-                    <br> <img width="200px" src="{{this.imglink}}" />
-                    <br>
-                    {{this.Price}}
-                    </div>
-                {{/each}} --}}
             </div>
         </div>
         
