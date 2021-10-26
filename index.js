@@ -5,9 +5,27 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const mongo = require("mongodb").MongoClient;
-const MONGODB_URI = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const MONGODB_URI = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/test";
+const bodyParser = require('body-parser');
+const { urlencoded } = require("express");
+const { stringify } = require("querystring");
+const { MongoClient } = require("mongodb");
+const mongoose = require('mongoose');
+const multer = require('multer');
 
-//  /A/B/C/D/.........
+//define disk
+const storage = multer.diskStorage({
+    destination:function(req, file, cb){
+        cb(null, 'public/imgs');
+    },
+    filename:function(req,file,cb){
+        cb(null,file.originalname);
+    }
+});
+const upload=multer({
+    storage:storage
+})
+
 //view engine setup 
 
 app.set("views", path.join(__dirname, "views")); //setting views directory for views. 
@@ -67,7 +85,7 @@ router.get( "/products",
       mongo.connect(MONGODB_URI, { useNewUrlParser: true ,  
           useUnifiedTopology: true },
           async (err, db) => {
-              if (err) {
+              if (err) {``
                   console.log("\n ERR: ", err);
                   process.exit(0);
               }
@@ -88,6 +106,81 @@ router.get( "/about",
 
 });
 
+//connect mongodb
+mongoose.connect("mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/TeeHee?retryWrites=true&w=majority",{useNewUrlParser:true}, {useUnifiedTopology:true});
+var db=mongoose.connection;
+
+//need to have this dont know why
+app.use(bodyParser.urlencoded({extended:true}));
+
+
+app.get( "/admin", 
+    (req, res) => {
+
+        res.render('admin')
+        
+
+});
+
+
+
+
+router.get( "/adminview", 
+    (req, res) => {  
+
+
+        mongo.connect(MONGODB_URI, { useNewUrlParser: true ,  
+            useUnifiedTopology: true },
+            async (err, db) => {
+                if (err) {``
+                    console.log("\n ERR: ", err);
+                    process.exit(0);
+                }
+                console.log("\n Connected !");
+                const db1 = db.db('TeeHee');
+                const cloth = await db1.collection('Clothes').find({}).toArray();
+                console.log(cloth);
+                res.render("adminview", { adminview : cloth });
+                db.close()
+            }
+    );
+        
+});
+
+
+
+//Get info from admin form
+router.post("/addcloth",upload.single('image') ,function(req,res){
+    var name =req.body.Name;
+    var price =req.body.Price;
+    var quantity =req.body.Quantity;
+    var des =req.body.Description;
+    var made =req.body.origin;
+    var image = "imgs/" +req.file.filename;
+    var data ={
+        "Name": name,
+        "Price": price,
+        "Quantity": quantity,
+        "Description": des,
+        "Madein": made,
+        "image": image,
+        
+    }
+    //insert into mongodb
+    db.collection('Clothes').insertOne(data, function(err,collection){
+        if (err) throw err;
+        console.log("added"); 
+           
+    });
+    //return to admin page
+    
+    return res.redirect('admin')
+})
+
+//update data
+router.post('/update', function(req,res){
+    res.send("test update")
+})
 
 router.get( "/login", 
     (req, res) => {
