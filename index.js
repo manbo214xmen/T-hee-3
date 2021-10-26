@@ -9,10 +9,12 @@ const MONGODB_URI = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.n
 const bodyParser = require('body-parser');
 const { urlencoded } = require("express");
 const { stringify } = require("querystring");
-const { MongoClient } = require("mongodb");
 const mongoose = require('mongoose');
 const multer = require('multer');
 
+//connect mongodb
+mongoose.connect("mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/TeeHee?retryWrites=true&w=majority",{useNewUrlParser:true}, {useUnifiedTopology:true});
+var db = mongoose.connection;
 //define disk
 const storage = multer.diskStorage({
     destination:function(req, file, cb){
@@ -82,22 +84,21 @@ router.get( "/order",
 
 router.get( "/products", 
   (req, res) => {
-      mongo.connect(MONGODB_URI, { useNewUrlParser: true ,  
-          useUnifiedTopology: true },
-          async (err, db) => {
-              if (err) {``
-                  console.log("\n ERR: ", err);
-                  process.exit(0);
-              }
-              console.log("\n Connected !");
-              const db1 = db.db('TeeHee');
-              const items = await db1.collection('Products').find({}).toArray();
-              console.log(items);
-              res.render("products", { products : items });
-              db.close();
-          }
-  );
-});
+        db.collection('Products').find({}, async (err, docs) => {
+            if (err){
+                console.log("\n ERR: ", err);
+                process.exit(0);
+            }
+            else {
+                result = await docs.toArray();
+                console.log(result);
+                res.render("products", { products : result });
+            }
+        });
+          
+    }
+);
+
 
 
 router.get( "/about", 
@@ -105,10 +106,6 @@ router.get( "/about",
         res.render("About");
 
 });
-
-//connect mongodb
-mongoose.connect("mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/TeeHee?retryWrites=true&w=majority",{useNewUrlParser:true}, {useUnifiedTopology:true});
-var db=mongoose.connection;
 
 //need to have this dont know why
 app.use(bodyParser.urlencoded({extended:true}));
