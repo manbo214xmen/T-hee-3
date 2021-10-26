@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>ADD NEW CLOTHES</h1>
+    <form action="/addcloth" method="post" class="container" enctype="multipart/form-data">
+    <div>
+        <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" name="Name" placeholder="Cloth name" value="{{employee.fullName}}">
+        <div class="text-danger">
+            {{employee.fullNameError}}</div>
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        <input type="text" class="form-control" name="Price" placeholder="price" value="{{employee.email}}">
+        <div class="text-danger">
+            {{employee.emailError}}</div>
+    </div>
+
+    <div class="form-group">
+            <label>Quantity</label>
+            <input type="text" class="form-control" name="Quantity" placeholder="quantity" value="{{employee.mobile}}">
+    </div>
+     <div class="form-group">
+            <label>Made In</label>
+            <input type="text" class="form-control" name="origin" placeholder="from" value="{{employee.city}}">
+    
+    <div class="form-group">
+        <label>Description</label>
+        <input type="text" class="form-control" name="Description" placeholder="bla bla bla" value="{{employee.email}}">
+        <div class="text-danger">
+            {{employee.emailError}}</div>
+    </div>
+
+    <div class="upimg">
+        <label >Upload image</label>
+        <input accept="image/*" type="file" name="image" id="image" onchange="showimg(event)" >
+        <img id="img" >
+    </div> 
+      <button>ADD TOY</button>
+       
+        
+      <a class="btn btn-secondary" href="./adminview"><i class="fa fa-list-alt"></i> View All</a>
+    </form>
+    <script>
+        function showimg(event) 
+{
+ var reader = new FileReader();
+ reader.onload = function()
+ {
+  var output = document.getElementById('img');
+  output.src = reader.result;
+ }
+ reader.readAsDataURL(event.target.files[0]);
+}
+
+    </script>
+</body>
+</html>
