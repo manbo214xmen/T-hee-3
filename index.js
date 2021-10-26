@@ -9,12 +9,10 @@ const MONGODB_URI = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.n
 const bodyParser = require('body-parser');
 const { urlencoded } = require("express");
 const { stringify } = require("querystring");
+const { MongoClient } = require("mongodb");
 const mongoose = require('mongoose');
 const multer = require('multer');
 
-//connect mongodb
-mongoose.connect("mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/TeeHee?retryWrites=true&w=majority",{useNewUrlParser:true}, {useUnifiedTopology:true});
-var db = mongoose.connection;
 //define disk
 const storage = multer.diskStorage({
     destination:function(req, file, cb){
@@ -84,21 +82,22 @@ router.get( "/order",
 
 router.get( "/products", 
   (req, res) => {
-        db.collection('Products').find({}, async (err, docs) => {
-            if (err){
-                console.log("\n ERR: ", err);
-                process.exit(0);
-            }
-            else {
-                result = await docs.toArray();
-                console.log(result);
-                res.render("products", { products : result });
-            }
-        });
-          
-    }
-);
-
+      mongo.connect(MONGODB_URI, { useNewUrlParser: true ,  
+          useUnifiedTopology: true },
+          async (err, db) => {
+              if (err) {``
+                  console.log("\n ERR: ", err);
+                  process.exit(0);
+              }
+              console.log("\n Connected !");
+              const db1 = db.db('TeeHee');
+              const items = await db1.collection('Products').find({}).toArray();
+              console.log(items);
+              res.render("products", { products : items });
+              db.close();
+          }
+  );
+});
 
 
 router.get( "/about", 
@@ -106,6 +105,10 @@ router.get( "/about",
         res.render("About");
 
 });
+
+//connect mongodb
+mongoose.connect("mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/TeeHee?retryWrites=true&w=majority",{useNewUrlParser:true}, {useUnifiedTopology:true});
+var db=mongoose.connection;
 
 //need to have this dont know why
 app.use(bodyParser.urlencoded({extended:true}));
@@ -121,11 +124,9 @@ app.get( "/admin",
 
 
 
-
+//view all products
 router.get( "/adminview", 
     (req, res) => {  
-
-
         mongo.connect(MONGODB_URI, { useNewUrlParser: true ,  
             useUnifiedTopology: true },
             async (err, db) => {
@@ -135,7 +136,7 @@ router.get( "/adminview",
                 }
                 console.log("\n Connected !");
                 const db1 = db.db('TeeHee');
-                const cloth = await db1.collection('Clothes').find({}).toArray();
+                const cloth = await db1.collection('Products').find({}).toArray();
                 console.log(cloth);
                 res.render("adminview", { adminview : cloth });
                 db.close()
@@ -148,23 +149,24 @@ router.get( "/adminview",
 
 //Get info from admin form
 router.post("/addcloth",upload.single('image') ,function(req,res){
-    var name =req.body.Name;
-    var price =req.body.Price;
-    var quantity =req.body.Quantity;
+    var name =req.body.ProName;
+    var id = req.body.ProID;
+    var price = req.body.Price;
+    var quantity =req.body.numofpro;
     var des =req.body.Description;
-    var made =req.body.origin;
+  
     var image = "imgs/" +req.file.filename;
     var data ={
-        "Name": name,
+        "ProID": id,
+        "ProName":name,
         "Price": price,
-        "Quantity": quantity,
+        "numofpro": quantity,
         "Description": des,
-        "Madein": made,
         "image": image,
         
     }
     //insert into mongodb
-    db.collection('Clothes').insertOne(data, function(err,collection){
+    db.collection('Products').insertOne(data, function(err,collection){
         if (err) throw err;
         console.log("added"); 
            
@@ -174,7 +176,7 @@ router.post("/addcloth",upload.single('image') ,function(req,res){
     return res.redirect('admin')
 })
 
-//update data
+//update data ( BETA )
 router.post('/update', function(req,res){
     res.send("test update")
 })
