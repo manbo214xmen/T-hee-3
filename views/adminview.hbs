@@ -14,23 +14,29 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Full Name</th>
+            <th>Product ID</th>
+            <th>Name</th>
             <th>Price</th>
             <th>Quantity</th>
             <th>Description</th>
+            <th>Product Image</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         {{#each adminview}}
         <tr>
-            <td>{{this.Name}}</td>
+            <td>{{this.ProID}}</td>
+            <td>{{this.ProName}}</td>
             <td>{{this.Price}}</td>
-            <td>{{this.Quantity}}</td>
+            <td>{{this.numofpro}}</td>
             <td>{{this.Description}}</td>
+            <td class="resize">
+                <img src="{{this.image}}" style="width:360px; height:360px; object-fit:contain"></td>
              <td>
                 <a href=""><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
-                <button type="submit"  onclick="return confirm('Are you sure to delete this record ?');"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button>
+                <a href="deletepro?id={{this.ProID}}">Delete</a>
+                
             </td>
         </tr>
         {{/each}}

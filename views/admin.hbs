@@ -12,56 +12,109 @@
 <body>
     <h1>ADD NEW CLOTHES</h1>
     <form action="/addcloth" method="post" class="container" enctype="multipart/form-data">
+
+
+    <div>
+        <div class="form-group">
+        <label>Product ID</label>
+        <input type="text" class="form-control" name="ProID" placeholder="Cloth name" >
+        <div class="text-danger">
+            </div>
+    </div>
+
     <div>
         <div class="form-group">
         <label>Name</label>
-        <input type="text" class="form-control" name="Name" placeholder="Cloth name" value="{{employee.fullName}}">
+        <input type="text" class="form-control" name="ProName" placeholder="Cloth name" >
         <div class="text-danger">
-            {{employee.fullNameError}}</div>
+            </div>
     </div>
 
     <div class="form-group">
         <label>Price</label>
-        <input type="text" class="form-control" name="Price" placeholder="price" value="{{employee.email}}">
+        <input type="text" class="form-control" name="Price" placeholder="price" >
         <div class="text-danger">
-            {{employee.emailError}}</div>
+           </div>
     </div>
 
     <div class="form-group">
             <label>Quantity</label>
-            <input type="text" class="form-control" name="Quantity" placeholder="quantity" value="{{employee.mobile}}">
+            <input type="text" class="form-control" name="numofpro" placeholder="quantity" >
     </div>
-     <div class="form-group">
-            <label>Made In</label>
-            <input type="text" class="form-control" name="origin" placeholder="from" value="{{employee.city}}">
     
     <div class="form-group">
         <label>Description</label>
-        <input type="text" class="form-control" name="Description" placeholder="bla bla bla" value="{{employee.email}}">
+        <input type="text" class="form-control" name="Description" placeholder="bla bla bla" >
         <div class="text-danger">
-            {{employee.emailError}}</div>
+            </div>
     </div>
 
     <div class="upimg">
         <label >Upload image</label>
-        <input accept="image/*" type="file" name="image" id="image" onchange="showimg(event)" >
-        <img id="img" >
-    </div> 
-      <button>ADD TOY</button>
-       
         
+
+    <div class="center">
+        <div class="form-input">
+          <label for="file-ip-1">Upload Image</label>
+          <input type="file" name="image" id="file-ip-1" accept="image/*" onchange="showPreview(event);">
+          <div class="preview">
+            <img id="file-ip-1-preview">
+          </div>
+        </div>
+      </div>
+        
+    </div> 
+      <button>ADD PRODUCT</button>
       <a class="btn btn-secondary" href="./adminview"><i class="fa fa-list-alt"></i> View All</a>
     </form>
+     <style>
+          
+
+.center {
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.form-input {
+  width:500px;
+  padding:20px;
+  background:#fff;
+  border:2px dashed #555;
+}
+.form-input input {
+  display:none;
+}
+.form-input label {
+  display:block;
+  width:100%;
+  height:50px;
+  line-height:50px;
+  text-align:center;
+  background:#333;
+  color:#fff;
+  font-size:15px;
+  font-family:"Open Sans",sans-serif;
+  text-transform:Uppercase;
+  font-weight:600;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.form-input img {
+  width:100%;
+  display:none;
+  margin-top:10px;
+}
+      </style>
     <script>
-        function showimg(event) 
-{
- var reader = new FileReader();
- reader.onload = function()
- {
-  var output = document.getElementById('img');
-  output.src = reader.result;
- }
- reader.readAsDataURL(event.target.files[0]);
+        function showPreview(event){
+  if(event.target.files.length > 0){
+    var src = URL.createObjectURL(event.target.files[0]);
+    var preview = document.getElementById("file-ip-1-preview");
+    preview.src = src;
+    preview.style.display = "block";
+  }
 }
 
     </script>

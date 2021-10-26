@@ -5,14 +5,13 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const mongo = require("mongodb").MongoClient;
-const MONGODB_URI = "mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/test";
 const bodyParser = require('body-parser');
 const { urlencoded } = require("express");
 const { stringify } = require("querystring");
-const { MongoClient } = require("mongodb");
 const mongoose = require('mongoose');
 const multer = require('multer');
-
+mongoose.connect("mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/TeeHee?retryWrites=true&w=majority",{useNewUrlParser:true}, {useUnifiedTopology:true});
+var db=mongoose.connection;
 //define disk
 const storage = multer.diskStorage({
     destination:function(req, file, cb){
@@ -82,22 +81,20 @@ router.get( "/order",
 
 router.get( "/products", 
   (req, res) => {
-      mongo.connect(MONGODB_URI, { useNewUrlParser: true ,  
-          useUnifiedTopology: true },
-          async (err, db) => {
-              if (err) {``
-                  console.log("\n ERR: ", err);
-                  process.exit(0);
-              }
-              console.log("\n Connected !");
-              const db1 = db.db('TeeHee');
-              const items = await db1.collection('Products').find({}).toArray();
-              console.log(items);
-              res.render("products", { products : items });
-              db.close();
-          }
-  );
-});
+        db.collection('Products').find({}, async (err, docs) => {
+            if (err){
+                console.log("\n ERR: ", err);
+                process.exit(0);
+            }
+            else {
+                result = await docs.toArray();
+                console.log(result);
+                res.render("products", { products : result });
+            }
+        });
+          
+    }
+);
 
 
 router.get( "/about", 
@@ -107,9 +104,6 @@ router.get( "/about",
 });
 
 //connect mongodb
-mongoose.connect("mongodb+srv://teeheeadmin:01011994@cluster0.bjskh.mongodb.net/TeeHee?retryWrites=true&w=majority",{useNewUrlParser:true}, {useUnifiedTopology:true});
-var db=mongoose.connection;
-
 //need to have this dont know why
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -126,24 +120,19 @@ app.get( "/admin",
 
 //view all products
 router.get( "/adminview", 
-    (req, res) => {  
-        mongo.connect(MONGODB_URI, { useNewUrlParser: true ,  
-            useUnifiedTopology: true },
-            async (err, db) => {
-                if (err) {``
-                    console.log("\n ERR: ", err);
-                    process.exit(0);
-                }
-                console.log("\n Connected !");
-                const db1 = db.db('TeeHee');
-                const cloth = await db1.collection('Products').find({}).toArray();
-                console.log(cloth);
-                res.render("adminview", { adminview : cloth });
-                db.close()
+    (req, res) => {
+        db.collection('Products').find({}, async (err, docs) => {
+            if (err){
+                console.log("\n ERR: ", err);
+                process.exit(0);
             }
-    );
-        
-});
+            else {
+                result = await docs.toArray();
+                console.log(result);
+                res.render("adminview", { adminview : result });
+            }
+        });       
+    });
 
 
 
@@ -181,12 +170,16 @@ router.post('/update', function(req,res){
     res.send("test update")
 })
 
-router.get( "/login", 
-    (req, res) => {
-
-                res.writeHead(200);
-                res.end("<h1> Login page ! </h1>");
-
+//delete
+router.get("/deletepro",function(req,res){
+    db.collection("Products").deleteOne({ "ProID": req.query.id }, function(err) {
+        if (!err) {
+                return res.redirect('adminview/')
+        }
+        else {
+                return res.redirect('products')
+        }
+    });
 });
 
 
