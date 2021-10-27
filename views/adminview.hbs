@@ -33,9 +33,10 @@
             <td>{{this.Description}}</td>
             <td class="resize">
                 <img src="{{this.imglink}}" style="width:360px; height:360px; object-fit:contain"></td>
-             <td >
-                <a href="/edit/{{this._id}}"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
-                <button type="submit"  onclick="return confirm('Are you sure to delete this record ?');"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></button>
+             <td>
+                <a href=""><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></a>
+                <a href="/deletepro?id={{this.ProID}}">Delete</a>
+                
             </td>
         </tr>
         {{/each}}
