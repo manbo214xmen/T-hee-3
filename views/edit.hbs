@@ -10,14 +10,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>ADD NEW CLOTHES</h1>
-    <form action="/addcloth" method="post" class="container" enctype="multipart/form-data">
+    <h1>UPDATE CLOTHES</h1>
+    <form method="post" action="/update/{{data._id}}?_method=PUT" enctype="multipart/form-data">
 
-  
-    <div>
+        <div>
         <div class="form-group">
         <label>Product ID</label>
-        <input type="text" class="form-control" name="ProID" placeholder="Cloth name" value="{{data.ProID}}" >
+        <input type="text" class="form-control" name="ProID" placeholder="Cloth ID" value="{{data.ProID}}" >
         <div class="text-danger">
             </div>
     </div>
@@ -51,21 +50,18 @@
 
     <div class="upimg">
         <label >Upload image</label>
+        <img src="{{data.imglink}}">
         
 
-    <div class="center">
-        <div class="form-input">
-          <label for="file-ip-1">Upload Image</label>
-          <input type="file" name="image" id="file-ip-1" accept="image/*" onchange="showPreview(event);">
-          <div class="preview">
-            <img id="file-ip-1-preview">
-          </div>
-        </div>
-      </div>
+   
         
     </div> 
-      <button>ADD PRODUCT</button>
-      <a class="btn btn-secondary" href="./adminview"><i class="fa fa-list-alt"></i> View All</a>
+        
+         
+        <button type="submit" class="btn btn-info" id="submitbutton">Update Product</button>
+    </form>
+     
+      {{!-- <a type="submit" class="btn btn-secondary" ><i class="fa fa-list-alt" ></i> View All</a> --}}
     </form>
      <style>
           
