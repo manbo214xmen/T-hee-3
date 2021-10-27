@@ -151,7 +151,7 @@ router.post("/addcloth",upload.single('image') ,function(req,res){
         "Price": price,
         "numofpro": quantity,
         "Description": des,
-        "image": image,
+        "imglink": image,
         
     }
     //insert into mongodb
@@ -182,6 +182,19 @@ router.get("/deletepro",function(req,res){
     });
 });
 
+router.get("/prodetail", function(req,res){
+    db.collection("Products").findOne({"ProID": req.query.id}, async (err, docs) => {
+        if (err){
+            console.log("\n ERR: ", err);
+            process.exit(0);
+        }
+        else {
+            result = await docs;
+            console.log(result);
+            res.render("product_detail", { products : result });
+        }
+    });       
+});
 
 router.get( "/signin", 
     (req, res) => {
