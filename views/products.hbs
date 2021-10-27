@@ -83,11 +83,11 @@
             <div class="row">
                 {{#each products}}
                 <div class="col-lg-4">
-                    <a href= "#" alt="" title="">
+                    <a href= "prodetail?id={{this.ProID}}" alt="" title="">
                     <img src="{{this.imglink}}" class="img-fluid" alt="">
                     </a>
                     <h2 style="text-align: center;">
-                    <a href="#"  alt="" title="">{{this.ProName}}</a>
+                    <a href="prodetail?id={{this.ProID}}"  alt="" title="">{{this.ProName}}</a>
                     </h2>
                     <h3 style="text-align: center; text-color: rgb(123, 166, 245)">{{this.Price}}</h3>
 				</div>
